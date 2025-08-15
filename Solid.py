@@ -1,9 +1,9 @@
-import logging
+
 from abc import ABC, abstractmethod
 
+from logger import get_logger
 
-
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = get_logger(__name__)
 
 
 
@@ -54,22 +54,22 @@ class LibraryManager:
 
     def add_book(self, title: str, author: str, year: int) -> None:
         self._library.add_book(Book(title=title, author=author, year=year))
-        logging.info("Книгу додано: %s — %s (%d)", author, title, year)
+        logger.info("Книгу додано: %s — %s (%d)", author, title, year)
 
     def remove_book(self, title: str) -> None:
         removed = self._library.remove_book(title)
         if removed:
-            logging.info("Книгу видалено: %s", title)
+            logger.info("Книгу видалено: %s", title)
         else:
-            logging.info("Книгу не знайдено: %s", title)
+            logger.info("Книгу не знайдено: %s", title)
 
     def show_books(self) -> None:
         books = self._library.get_books()
         if not books:
-            logging.info("Бібліотека порожня.")
+            logger.info("Бібліотека порожня.")
             return
         for book in books:
-            logging.info("Title: %s, Author: %s, Year: %d", book.title, book.author, book.year)
+            logger.info("Title: %s, Author: %s, Year: %d", book.title, book.author, book.year)
 
 
 def main() -> None:
@@ -85,7 +85,7 @@ def main() -> None:
                 try:
                     year = int(year_raw)
                 except ValueError:
-                    logging.info("Невірний формат року: %s", year_raw)
+                    logger.info("Невірний формат року: %s", year_raw)
                     continue
                 manager.add_book(title, author, year)
             case "remove":
@@ -96,7 +96,7 @@ def main() -> None:
             case "exit":
                 break
             case _:
-                logging.info("Invalid command. Please try again.")
+                logger.info("Invalid command. Please try again.")
 
 
 if __name__ == "__main__":
